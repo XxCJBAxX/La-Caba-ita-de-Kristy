@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parador Turístico La Cabañita De Kristy | Menú Digital</title>
+    <style>
+        :root {
+            --primary: #b91c1c;
+            --primary-dark: #7f1d1d;
+            --accent: #d97706;
+            --bg: #fdf8f3;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --whatsapp: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 90px;
+        }
+
+        header {
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75)), url('frente.jpg') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 45px 20px 35px;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #f3f4f6;
+            max-width: 500px;
+            margin: 0 auto 15px;
+        }
+
+        .info-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 15px 15px 5px;
+            max-width: 900px;
+            margin: 0 auto;
+            scrollbar-width: none;
+        }
+        .filters::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+            margin: 15px 0 12px;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f3e8dd;
+        }
+
+        .card img {
+            width: 100%;
+            height: 185px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .card-no-img {
+            width: 100%;
+            height: 110px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .card-body {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-price {
+            background: #fef2f2;
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 3px 9px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.4;
+            margin-bottom: 14px;
+            flex-grow: 1;
+        }
+
+        .btn-add {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-dark);
+        }
+
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            border-top: 2px solid #f3e8dd;
+        }
+
+        .cart-info {
+            font-size: 0.9rem;
+        }
+
+        .cart-info strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-whatsapp:disabled {
+            background: #9ca3af;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .notes-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="badge">Auténtico Sabor Llanero</span>
+        <h1>Parador Turístico La Cabañita De Kristy</h1>
+        <p>La mejor comida criolla y platos llaneros en San Fernando de Apure</p>
+        <div class="info-bar">
+            📍 <strong>Ubicación:</strong> San Fernando, Edo. Apure, Sector Las Cabañitas (a 500 mts del Aeropuerto)<br>
+            🕒 <strong>Horario:</strong> Lunes a Domingo de 8:00 AM a 6:00 PM
+        </div>
+    </header>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterMenu('todos', this)">Todo el Menú</button>
+        <button class="filter-btn" onclick="filterMenu('pescados', this)">Pescados de Río</button>
+        <button class="filter-btn" onclick="filterMenu('carnes', this)">Carnes Asadas</button>
+        <button class="filter-btn" onclick="filterMenu('criollo', this)">Cachapas y Sopas</button>
+        <button class="filter-btn" onclick="filterMenu('bebidas', this)">Bebidas</button>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title" id="section-heading">Nuestro Menú</h2>
+        <div class="menu-grid" id="menu-container"></div>
+    </div>
+
+    <div class="cart-bar">
+        <div class="cart-info">
+            <span id="cart-count">0 productos seleccionados</span>
+            <strong id="cart-total">Total: $0.00</strong>
+        </div>
+        <button class="btn-whatsapp" id="btn-open-modal" onclick="openModal()" disabled>
+            Ver Pedido 🛒
+        </button>
+    </div>
+
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tu Pedido</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="cart-items-list"></div>
+            <input type="text" id="order-notes" class="notes-input" placeholder="Ej: Coca-Cola o Pepsi / Jugo de... / Para llevar...">
+            <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:bold; margin: 10px 0 15px;">
+                <span>Total estimado:</span>
+                <span id="modal-total">$0.00</span>
+            </div>
+            <button class="btn-whatsapp" style="width:100%; justify-content:center;" onclick="sendWhatsApp()">
+                📲 Enviar Pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "584144787649";
+
+        const products = [
+            {
+                id: 1,
+                name: "Cachapa Llanera",
+                price: 5.00,
+                category: "criollo",
+                image: "cachapas.jpg",
+                desc: "Cachapa de maíz tierno recién hecha en budare, bañada en mantequilla y abundante queso llanero rallado."
+            },
+            {
+                id: 2,
+                name: "Pavón Frito",
+                price: 8.00,
+                category: "pescados",
+                image: "pavon.jpg",
+                desc: "Crujiente pavón de río recién frito (desde $8). Incluye sus 3 contornos tradicionales."
+            },
+            {
+                id: 3,
+                name: "Bagre Frito o Asado",
+                price: 10.00,
+                category: "pescados",
+                image: "bagre.jpg",
+                desc: "Rueda o pieza de bagre fresco frito o asado (desde $10). Viene acompañado con sus 3 contornos."
+            },
+            {
+                id: 4,
+                name: "Dorado Frito",
+                price: 10.00,
+                category: "pescados",
+                image: "bagre.jpg",
+                desc: "Delicioso dorado de río bien dorado y jugoso. Incluye sus 3 contornos completos."
+            },
+            {
+                id: 5,
+                name: "Coporo Frito",
+                price: 5.00,
+                category: "pescados",
+                image: "pavon.jpg",
+                desc: "Clásico coporo llanero bien tostado. Viene servido con sus 3 contornos."
+            },
+            {
+                id: 6,
+                name: "1 Kg de Carne Asada",
+                price: 35.00,
+                category: "carnes",
+                image: "carne.jpg",
+                desc: "Un kilo completo de carne en vara/asada al punto, ideal para compartir en familia."
+            },
+            {
+                id: 7,
+                name: "1 Kg de Cochino Asado",
+                price: 32.00,
+                category: "carnes",
+                icon: "🥩",
+                desc: "Un kilo de cochino asado jugoso y dorado con el auténtico sabor del llano."
+            },
+            {
+                id: 8,
+                name: "Sopas Criollas (Res, Pescado, Mondongo o Picadillo)",
+                price: 5.00,
+                category: "criollo",
+                icon: "🍲",
+                desc: "Sustanciosas sopas hechas a leña: res, pescado, mondongo o picadillo llanero (desde $5)."
+            },
+            {
+                id: 9,
+                name: "Refresco 1.25 Lts (Coca-Cola o Pepsi)",
+                price: 2.00,
+                category: "bebidas",
+                icon: "🥤",
+                desc: "Presentación de 1.25 litros bien fría (indica si prefieres Coca-Cola o Pepsi en la nota)."
+            },
+            {
+                id: 10,
+                name: "Malta Personal",
+                price: 1.00,
+                category: "bebidas",
+                icon: "🍺",
+                desc: "Malta personal bien fría para acompañar tus platos llaneros."
+            },
+            {
+                id: 11,
+                name: "Refresco 2 Lts (Coca-Cola o Pepsi)",
+                price: 3.00,
+                category: "bebidas",
+                icon: "🍾",
+                desc: "Botella de 2 litros ideal para compartir en mesa o en familia (indica Coca-Cola o Pepsi en la nota)."
+            },
+            {
+                id: 12,
+                name: "Agua Mineral Personal",
+                price: 1.50,
+                category: "bebidas",
+                icon: "💧",
+                desc: "Agua mineral personal bien fría."
+            },
+            {
+                id: 13,
+                name: "Jugos Naturales de Temporada",
+                price: 2.00,
+                category: "bebidas",
+                icon: "🧃",
+                desc: "Jugos naturales frescos preparados al momento (indica el sabor de preferencia en la nota)."
+            }
+        ];
+
+        const categoryTitles = {
+            todos: "Nuestro Menú",
+            pescados: "Pescados de Río",
+            carnes: "Carnes Asadas",
+            criollo: "Cachapas y Sopas",
+            bebidas: "Bebidas"
+        };
+
+        let cart = {};
+
+        function renderMenu(filter = 'todos') {
+            const container = document.getElementById('menu-container');
+            document.getElementById('section-heading').innerText = categoryTitles[filter] || "Nuestro Menú";
+            container.innerHTML = '';
+
+            const filtered = filter === 'todos' ? products : products.filter(p => p.category === filter);
+
+            filtered.forEach(prod => {
+                const mediaHtml = prod.image
+                    ? `<img src="${prod.image}" alt="${prod.name}" onerror="this.style.display='none'">`
+                    : `<div class="card-no-img">${prod.icon}</div>`;
+
+                container.innerHTML += `
+                    <div class="card">
+                        ${mediaHtml}
+                        <div class="card-body">
+                            <div class="card-header">
+                                <span class="card-title">${prod.name}</span>
+                                <span class="card-price">$${prod.price.toFixed(2)}</span>
+                            </div>
+                            <p class="card-desc">${prod.desc}</p>
+                            <button class="btn-add" onclick="addToCart(${prod.id})">+ Agregar al pedido</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterMenu(category, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderMenu(category);
+        }
+
+        function addToCart(id) {
+            cart[id] = (cart[id] || 0) + 1;
+            updateCartUI();
+        }
+
+        function changeQty(id, delta) {
+            if (!cart[id]) return;
+            cart[id] += delta;
+            if (cart[id] <= 0) delete cart[id];
+            updateCartUI();
+            renderCartItems();
+        }
+
+        function updateCartUI() {
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            for (const id in cart) {
+                const prod = products.find(p => p.id == id);
+                totalItems += cart[id];
+                totalPrice += prod.price * cart[id];
+            }
+
+            document.getElementById('cart-count').innerText = `${totalItems} ${totalItems === 1 ? 'producto seleccionado' : 'productos seleccionados'}`;
+            document.getElementById('cart-total').innerText = `Total: $${totalPrice.toFixed(2)}`;
+            document.getElementById('modal-total').innerText = `$${totalPrice.toFixed(2)}`;
+            document.getElementById('btn-open-modal').disabled = totalItems === 0;
+        }
+
+        function renderCartItems() {
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = '';
+
+            for (const id in cart) {
+                const prod = products.find(p => p.id == id);
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${prod.name}</strong><br>
+                            <small>$${prod.price.toFixed(2)} c/u</small>
+                        </div>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="changeQty(${id}, -1)">-</button>
+                            <span>${cart[id]}</span>
+                            <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function openModal() {
+            renderCartItems();
+            document.getElementById('cart-modal').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('cart-modal').classList.remove('open');
+        }
+
+        function sendWhatsApp() {
+            let message = "¡Hola *Parador Turístico La Cabañita De Kristy*! Me gustaría hacer el siguiente pedido:\n\n";
+            let total = 0;
+
+            for (const id in cart) {
+                const prod = products.find(p => p.id == id);
+                const subtotal = prod.price * cart[id];
+                total += subtotal;
+                message += `• ${cart[id]}x ${prod.name} ($${subtotal.toFixed(2)})\n`;
+            }
+
+            const notes = document.getElementById('order-notes').value.trim();
+            if (notes) {
+                message += `\n📝 *Nota:* ${notes}\n`;
+            }
+
+            message += `\n💰 *Total estimado: $${total.toFixed(2)}*`;
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        renderMenu();
+    </script>
+</body>
+</html>
